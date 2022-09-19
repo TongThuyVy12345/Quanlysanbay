@@ -1,0 +1,39 @@
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"/>
+			<nav id="sidebar">
+				<div class="p-4 pt-5">
+                        {% if current_user.avatar %}
+                            <img src="{{ current_user.avatar }}" width="30px" alt="{{ current_user.username }}">
+                        {% else %}
+
+                        {% endif %}
+             <ul class="list-unstyled components mb-5">
+	          <li>
+                  {{ current_user.username }}
+              </li>
+                <li>
+	            <a href="{{url_for('home')}}">Home</a>
+	          </li>
+                {% if current_user.is_authenticated %}
+                <li>
+                    <a class="nav-link text-success" href="{{ url_for('user_logout', name = 'user_login') }}">Dang Xuat</a>
+                </li>
+                {% else %}
+                <li>
+                    <a class="nav-link text-success" href="{{ url_for('user_login') }}">Dang Nhap</a>
+                </li>
+                <li>
+                    <a class="nav-link text-danger" href="{{ url_for('user_register') }}">Dang Ky</a>
+                </li>
+                {% endif %}
+	        </ul>
+	      </div>
+    	</nav>
+    <script src="{{ url_for('static', filename='javascript/popper.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/main.js') }}"></script>
+

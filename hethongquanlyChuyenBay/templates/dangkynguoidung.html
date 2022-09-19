@@ -1,0 +1,65 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Mua vé máy bay {% endblock %}
+
+{% block content %}
+<h1 id="tenphongbay">ĐĂNG KÝ NGƯỜI DÙNG</h1>
+{% if  err_mrg%}
+<div class="alert alert-danger">
+    <h4>{{err_mrg}}</h4>
+</div>
+{% endif%}
+<section class="trangchu-dangki-hinhanh">
+        <div class="trangchu thongtin">
+            <form method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="name">Họ tên</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="username">Tên tài khoản</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Giới tính:</label><br>
+                    <select name="gender" id="gender">
+                        <option value="Nữ">Nữ</option>
+                        <option value="Nam">Nam</option>
+                        <option value="Khác">Khác</option>
+                    </select>
+                </div>
+
+
+                 <div class="form-group">
+                    <label for="cmnd">CMND</label>
+                    <input type="text" class="form-control" id="cmnd" name="cmnd" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm">Xác nhận mật khẩu</label>
+                    <input type="password" class="form-control" id="confirm" name="confirm" required>
+                </div>
+                <div class="form-group">
+                    <label for="telephone">Số điện thoại</label>
+                    <input type="text" class="form-control" id="telephone" name="telephone" required>
+                </div>
+
+
+                <input type="submit" value="Đăng kí" class="btn btn-danger">
+                <br><br>
+                </form>
+        </div>
+        <div class="trangchu hinhanh right right-dangki">
+            <h3>Chào mừng đến với dịch vụ <br>Hãy đăng kí tài khoản để tiếp tục</h3>
+        </div>
+
+    </section>
+{% endblock %}

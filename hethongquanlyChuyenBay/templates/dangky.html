@@ -1,0 +1,130 @@
+{% extends 'layout/base-login.html' %}
+
+{% block title %}Đăng Ký{% endblock %}
+
+{% block content %}
+
+
+{% if err_msg %}
+    <div class="alert alert-danger">
+        <h4>{{ err_msg }}</h4>
+    </div>
+{% endif %}
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"/>
+<div class="wrap-on-footer1">
+<div class="animated bounceInDown">
+  <div class="container2">
+    <span class="error animated tada" id="msg"></span>
+    <form name="form1" class="box" onsubmit="return checkStuff()" method="post" action="{{ url_for('user_register') }}" enctype="multipart/form-data">
+
+        <br>
+
+
+        <i class="typcn typcn-eye" id="eye"></i>
+        <table>
+            <tr>
+                <td colspan="5">
+                     <div class="form-group">
+                        <label for="avatar">Ảnh đại diện</label>
+                        <input type="file" class="form-control" id="avatar" name="avatar" required>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="form-group">
+                        <label for="last_name">Họ và Đệm</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" required>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label for="first_name">Tên</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" required>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label for="gender">Giới tính</label>
+                        <input list="genders" class="form-control" id="gender" name="gender" required>
+                        <datalist id="genders">
+                            <option value="Nam">
+                            <option value="Nữ">
+                        </datalist>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label for="date_of_birth">Ngày sinh</label>
+                        <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div class="form-group">
+                        <label for="identity_card">Số CMND/Hộ chiếu</label>
+                        <input type="text" class="form-control" id="identity_card" name="identity_card" required>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label for="phone">Số điện thoại</label>
+                        <input type="text" class="form-control" id="phone" name="phone" required>
+                    </div>
+                </td>
+                <td colspan="1">
+                     <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div class="form-group">
+                        <label for="address">Địa chỉ</label>
+                        <input type="text" class="form-control" id="address" name="address" required>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label for="nationality">Quốc tịch</label>
+                        <input type="text" class="form-control" id="nationality" name="nationality" required>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <div class="form-group">
+                        <label for="username">Tên đăng nhập</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div class="form-group">
+                        <label for="password">Mật khẩu</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                </td>
+                <td colspan="2">
+                    <div class="form-group">
+                        <label for="confirm">Xác nhận mật khẩu</label>
+                        <input type="password" class="form-control" id="confirm" name="confirm" required>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <input type="submit" value="Đăng Ký" class="btn1">
+                </td>
+            </tr>
+        </table>
+      </form>
+        <a href="{{ url_for('user_login') }}" class="dnthave">Already have your account? Sign in</a>
+  </div>
+</div>
+    </div>
+{% endblock %}

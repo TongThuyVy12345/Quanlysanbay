@@ -1,0 +1,156 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Đặt Vé{% endblock %}
+<link rel='stylesheet' href="{{ url_for('static', filename='css/style.css')}}"/>
+{% block content %}
+<div class="row" style="width:100%;">
+<div  class="col-md-7 col-xs-12">
+    <table>
+        <tr>
+            <td>
+                <button style="color:white; background-color:green; border:none; padding:5px;">Chưa đặt chỗ</button>
+                <button style="color:white; background-color:gray; border:none; padding:5px;">Đã đặt chỗ</button>
+            </td>
+        </tr>
+    </table>
+    <table class="table table-borderless">
+        <thead>
+            <tr>
+                <td>A</td>
+                <td>B</td>
+                <td>C</td>
+                <td></td>
+                <td>D</td>
+                <td>E</td>
+                <td>G</td>
+            </tr>
+        </thead>
+        {% set count=0 %}
+        {% if seats[0].seat_name[0:1] == 'B'%}
+            {% set count=1 %}
+        {% elif seats[0].seat_name[0:1] == 'C'%}
+            {% set count=2 %}
+        {% elif seats[0].seat_name[0:1] == 'D'%}
+            {% set count=3 %}
+        {% elif seats[0].seat_name[0:1] == 'E'%}
+            {% set count=4 %}
+        {% elif seats[0].seat_name[0:1] == 'G'%}
+            {% set count=5 %}
+        {% endif %}
+        <tr>
+            {% for i in range(count) %}
+                <td></td>
+            {% endfor %}
+        {% for s in range(seats | length) %}
+            {% if (s + count) % 6 == 0 and s != 0 %}
+                <tr>
+            {% endif %}
+            {% if (s + count) % 6 == 3 %}
+                <td>{{ seats[s].seat_name[1:] }}</td>
+            {% endif %}
+            <td>
+                {% if seats[s].active == 1 %}
+                    <button style="border-radius:5px; background-color:green; color:white; border:none; width:35px; text-align:center;" onclick="window.location.href='{{ url_for('payment', user_id=user_id, seat_id=seats[s].seat_id) }}';">
+                    {{ seats[s].seat_name }}
+                    </button>
+                {% else %}
+                    <button class="button-seat" id="button" style="border-radius:5px; background-color:gray; color:white; border:none; width:35px; text-align:center;" >
+                    {{ seats[s].seat_name }}
+                    </button>
+                {% endif %}
+            </td>
+            {% if (s + count) % 6 == 5 %}
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tr>
+    </table>
+</div>
+<div class="col-md-5 col-xs-2">
+                    Chuyến bay <span>{{ flight.flight_id }}</span>:
+                    {% for a in airports %}
+                        {% if a.airport_id == flight.departure_airport %}
+                            <span>{{a.location + '(' + a.airport_id + ')' }}</span> >
+                        {% endif %}
+                    {% endfor %}
+                    {% for a in airports %}
+                        {% if a.airport_id == flight.arrival_airport %}
+                            <span>{{a.location + '(' + a.airport_id + ')' }}</span>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="row" style="padding:10px; background-color:white;  margin:auto;">
+                        <table style="width:100%;">
+                            <tr>
+                                <td style="width:50%;">
+                                    <p>Khởi hành:
+                                        {% for a in airports %}
+                                            {% if a.airport_id == flight.departure_airport %}
+                                                <span>{{a.airport_name + ' - ' + a.location }}</span> >
+                                            {% endif %}
+                                        {% endfor %}
+                                    </p>
+                                    <p>lúc <span>{{ flight.departure_day }}</span></p>
+                                    <p>Đến nơi:
+                                        {% for a in airports %}
+                                            {% if a.airport_id == flight.arrival_airport %}
+                                                <span>{{a.airport_name + ' - ' + a.location }}</span> >
+                                            {% endif %}
+                                        {% endfor %}
+                                    </p>
+                                    <p>lúc <span>{{ flight.arrival_day }}</span></p>
+                                    <hr>
+                                    <p>Thời gian bay:
+                                        <span>
+                                            {{ "{:.0f}".format(flight.flight_time / 60) + ' tiếng ' + "{:.0f}".format(flight.flight_time % 60) + ' phút' }}
+                                        </span>
+                                    </p>
+                                    <p>Hạng:
+                                        {% if price.ticket_type == 1 %}
+                                        <span>Thương gia</span>
+                                        {% elif price.ticket_type == 2 %}
+                                        <span>Phổ thông</span>
+                                        {% endif %}
+                                    </p>
+                                    <p>Máy bay:<span> {{ flight.name }}</span></p>
+                                    <p>Hãng khai thác: <span>{{ flight.airline_name }}</span></p>
+                                    <hr>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Hành khách:<span> 1</span> <span>Người lớn</span>
+                                <p>{{ user.last_name + " " + user.first_name }}</p>
+                                <br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table style="width:100%;">
+                                        <tr>
+                                            <td>Giá vé:</td>
+                                            <td>{{ "{:.0f}".format(price.price) }}</td>
+                                            <td>VND</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Thuế:</td>
+                                            <td>    0</td>
+                                            <td>VND</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3">
+                                                <hr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tổng cộng:</td>
+                                            <td style="color:red;">{{ "{:.0f}".format(price.price) }}</td>
+                                            <td>VND</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+</div>
+{% endblock %}

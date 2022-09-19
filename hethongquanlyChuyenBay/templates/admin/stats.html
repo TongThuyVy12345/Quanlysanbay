@@ -1,0 +1,126 @@
+{% extends 'admin/base.html' %}
+
+{% block body %}
+<h1 class="text-center text-danger">THỐNG KÊ BÁO CÁO</h1>
+<div class="row">
+    <div class="col-md-6 col-xs-12">
+        <table class="table" style="border:1px solid black;">
+            <tr>
+                <td>Tháng</td>
+<!--                <td>{{month + '/' + year}}</td>-->
+            </tr>
+            <tr>
+                <th>STT</th>
+                <th>Tuyến bay</th>
+                <th>Doanh thu</th>
+                <th>Số lượt bay</th>
+                <th>Tỷ lệ</th>
+            </tr>
+            {% for s in range(sales_starts | length) %}
+            <tr>
+                <td>{{ s + 1 }}</td>
+                <td>{{ sales_starts[s].schedule_id }}</td>
+                <td>{{ sales_starts[s].sales }}</td>
+                {% for q in quantity_starts %}
+                {% if sales_starts[s].schedule_id == q.schedule_id %}
+                <td>{{ q.quantity }}</td>
+                {% endif %}
+                {% endfor %}
+                <td></td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td></td>
+                <td>Tổng doanh thu: </td>
+                <td>{{ total }}</td>
+            </tr>
+        </table>
+    </div>
+    <script>
+var curDate = new Date();
+
+// Ngày hiện tại
+var curDay = curDate.getDate();
+var curMonth = curDate.getMonth() + 1;
+var curYear = curDate.getFullYear();
+document.getElementById('current-time').innerHTML = curMonth + "/" + curYear;
+</script>
+    <div class="col-md-6 col-xs-12">
+        <form>
+            <div class="form-group">
+                <input type="number" class="form-control" name="month" min="1" max="12" placeholder="Nhập tháng">
+            </div>
+            <div class="form-group">
+                <input type="number" class="form-control" name="year" min="2010" placeholder="Nhập năm">
+            </div>
+            <input type="submit" value="Thống kê" class="btn btn-info">
+        </form>
+        <canvas id="scheduleChartMonth"></canvas>
+    </div>
+</div>
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let lables = []
+    let data1 = [], data2 = []
+    let colors = [], colors2 = []
+    let borderColors = [], borderColors2 = []
+    let r, g, b;
+
+    {% for s in sales_starts %}
+        lables.push('{{ s.schedule_id }}')
+        data1.push({{ s.sales }})
+        {% for q in quantity_starts %}
+        {% if s.schedule_id == q.schedule_id %}
+            data2.push({{ q.quantity }})
+            r = Math.random()*255
+            g = Math.random()*255
+            b = Math.random()*255
+            colors2.push(`rgba(${r}, ${g}, ${b}, 0.2)`)
+            borderColors2.push(`rgba(${r}, ${g}, ${b}, 1)`)
+        {% endif %}
+        {% endfor %}
+        r = Math.random()*255
+        g = Math.random()*255
+        b = Math.random()*255
+        colors.push(`rgba(${r}, ${g}, ${b}, 0.2)`)
+        borderColors.push(`rgba(${r}, ${g}, ${b}, 1)`)
+    {% endfor %}
+
+    window.onload = function (){
+        const ctx = document.getElementById('scheduleChartMonth').getContext('2d');
+        loadChart(ctx, lables, data1, data2, colors, colors2,  borderColors, borderColors2)
+    }
+
+    function  loadChart(ctx, lables, data1, data2, colors, colors2,  borderColors, borderColors2){
+        const myChart = new Chart(ctx, {
+            data: {
+                labels: lables,
+                datasets: [{
+                    type: 'bar',
+                    label: 'Thống kê doanh thu',
+                    data: data1,
+                    backgroundColor: colors,
+                    borderColor: borderColors,
+                    borderWidth: 1
+                }, {
+                    type: 'line',
+                    label: 'Thống kê lượt bay',
+                    data: data2,
+                    backgroundColor: colors2,
+                    borderColor: borderColors2,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+</script>
+{% endblock%}
+{% endblock%}
